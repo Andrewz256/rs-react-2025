@@ -9,7 +9,7 @@
     "lint": "eslint . --fix",
     "preview": "vite preview",
     "format:fix": "prettier --write .",
-    "prepare": "cd .. && husky rs-react-app/.husky"
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "^18.3.1",
