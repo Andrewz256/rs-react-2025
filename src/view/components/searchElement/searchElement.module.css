@@ -1,0 +1,28 @@
+.listPageItem {
+  color: var(--accent-color);
+  font-size: 2rem;
+}
+
+.listPageItem:hover {
+  color: var(--link-hover-color);
+  cursor: pointer;
+}
+
+.resultItem {
+  display: table-row;
+  flex-direction: row;
+  gap: 4rem;
+}
+
+.resultItemColumn {
+  display: table-cell;
+  border-bottom: 1px black solid;
+}
+.resultItem:first-child {
+  background-color: rgba(75, 74, 74, 0.479);
+}
+
+.results {
+  display: table;
+  width: 50rem;
+}

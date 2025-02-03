@@ -1,15 +1,8 @@
-import React, { Component, ErrorInfo } from 'react';
+import { Component, ErrorInfo } from 'react';
+import { ErrorProps, ErrorState } from './data/types/error';
 
-interface Props {
-  children: React.ReactNode;
-}
-
-interface State {
-  hasError: boolean;
-}
-
-class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
+class ErrorBoundary extends Component<ErrorProps, ErrorState> {
+  constructor(props: ErrorProps) {
     super(props);
     this.state = { hasError: false };
   }

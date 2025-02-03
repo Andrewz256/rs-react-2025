@@ -1,9 +1,11 @@
-import { Component } from 'react';
 import './App.css';
-class App extends Component {
-  render() {
-    return <></>;
-  }
+import Main from './view/pages/main/main';
+function App() {
+  return (
+    <>
+      <Main />
+    </>
+  );
 }
 
 export default App;

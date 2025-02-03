@@ -1,0 +1,39 @@
+.mainPage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0 0 0;
+}
+.searchField {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.resultField {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.resultList > ul {
+  list-style: none;
+}
+.resultList > ul > li {
+  border-bottom: 1px black solid;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+.resultPagePagination > ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
