@@ -31,8 +31,18 @@ export class Main extends Component {
     const searchStr = new FormData(e.currentTarget)
       .get('searchInput')
       ?.toString();
-    if (searchStr) {
+    console.log(searchStr);
+    if (searchStr !== '') {
       getStarWarsHero({ heroName: searchStr }).then((res) => {
+        this.setState({
+          data: res?.results,
+          loading: 0,
+          pageNum: res?.count,
+        });
+      });
+    } else {
+      const pageNumber = { pageNumber: 1 };
+      getStarWarsHero(pageNumber).then((res) => {
         this.setState({
           data: res?.results,
           loading: 0,
