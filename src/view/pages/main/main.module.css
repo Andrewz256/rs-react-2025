@@ -24,7 +24,7 @@
   list-style: none;
 }
 .resultList > ul > li {
-  border-bottom: 1px black solid;
+  border-bottom: 1px var(--border-color) solid;
   display: flex;
   flex-direction: row;
   gap: 2rem;
@@ -36,4 +36,37 @@
   justify-content: center;
   align-items: center;
   gap: 2rem;
+}
+
+.searchButton {
+  cursor: pointer;
+  background-color: var(--default-bg-color);
+}
+
+.searchButton:active {
+  border: 3px;
+}
+
+.searchButton:hover {
+  background-color: var(--accent-color);
+}
+
+.loader {
+  border-left: 3rem solid var(--accent-color);
+  border-right: 3rem solid var(--accent-color);
+  border-radius: 50%;
+  width: 15rem;
+  height: 15rem;
+  animation: spin 2s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

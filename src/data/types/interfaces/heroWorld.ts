@@ -30,3 +30,8 @@ export interface PageNum {
 export interface AllHero {
   heroes: IHero[];
 }
+
+export interface SearchProps {
+  pageNumber?: number;
+  heroName?: string;
+}

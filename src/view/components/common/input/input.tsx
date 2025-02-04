@@ -19,6 +19,7 @@ class Input extends Component<InputProps> {
         className={`${this.classElement} ${styles.inputElement}`}
         placeholder={this.placeholder}
         id={this.idElement}
+        name={this.idElement}
       />
     );
   }

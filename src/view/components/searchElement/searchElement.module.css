@@ -16,10 +16,11 @@
 
 .resultItemColumn {
   display: table-cell;
-  border-bottom: 1px black solid;
+  border-bottom: 1px solid var(--border-color);
 }
 .resultItem:first-child {
-  background-color: rgba(75, 74, 74, 0.479);
+  background-color: var(--dark-bg-color);
+  color: var(--light-text-color);
 }
 
 .results {
