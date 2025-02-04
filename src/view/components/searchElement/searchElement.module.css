@@ -1,0 +1,29 @@
+.listPageItem {
+  color: var(--accent-color);
+  font-size: 2rem;
+}
+
+.listPageItem:hover {
+  color: var(--link-hover-color);
+  cursor: pointer;
+}
+
+.resultItem {
+  display: table-row;
+  flex-direction: row;
+  gap: 4rem;
+}
+
+.resultItemColumn {
+  display: table-cell;
+  border-bottom: 1px solid var(--border-color);
+}
+.resultItem:first-child {
+  background-color: var(--dark-bg-color);
+  color: var(--light-text-color);
+}
+
+.results {
+  display: table;
+  width: 50rem;
+}
