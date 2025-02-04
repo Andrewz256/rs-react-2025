@@ -66,7 +66,7 @@ export class Main extends Component {
         >
           <div className={style.searchField}>
             <Input
-              placeholder="written here..."
+              placeholder="write here..."
               classElement={style.searchInput}
               idElement="searchInput"
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
