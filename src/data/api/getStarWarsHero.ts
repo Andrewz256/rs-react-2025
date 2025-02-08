@@ -5,7 +5,6 @@ import { SearchProps } from '../types/interfaces/heroWorld';
 async function getStarWarsHero(
   props: SearchProps
 ): Promise<IHeroResponse | null> {
-  console.log(props);
   let url = '';
 
   if (props.pageNumber) {
@@ -14,11 +13,14 @@ async function getStarWarsHero(
   if (props.heroName) {
     url = `${StarWarsCred.API_URL}/people/?search=${props.heroName}`;
   }
+  if (props.all) {
+    url = `${StarWarsCred.API_URL}/people/`;
+  }
 
   try {
+    console.log(url);
     const response = await fetch(url, { method: 'GET' });
     const heroData = await response.json();
-    console.log(heroData);
     return heroData;
   } catch (error) {
     console.error(error);

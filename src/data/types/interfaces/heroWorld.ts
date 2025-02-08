@@ -20,18 +20,26 @@ export interface IHeroResponse {
   count: number;
   next: URL | null;
   previous: URL | null;
-  results: IHero[];
+  results: IHero[] | undefined;
 }
 
 export interface PageNum {
-  number: number;
+  pageCount: number | undefined;
 }
 
 export interface AllHero {
-  heroes: IHero[];
+  heroes: IHero[] | undefined;
 }
 
 export interface SearchProps {
   pageNumber?: number;
   heroName?: string;
+
+  all?: string;
 }
+
+export type HeroDataType = {
+  data?: IHero[];
+  pageNum?: number;
+  search?: string;
+};
