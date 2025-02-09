@@ -1,6 +1,6 @@
-import { IHeroResponse } from '../types/interfaces/heroWorld';
+import { IHeroResponse } from '../types/heroWorld';
 import StarWarsCred from '../types/starwarscred';
-import { SearchProps } from '../types/interfaces/heroWorld';
+import { SearchProps } from '../types/heroWorld';
 
 async function getStarWarsHero(
   props: SearchProps

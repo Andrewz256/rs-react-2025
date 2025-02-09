@@ -1,3 +1,5 @@
+import { Dispatch } from 'react';
+
 export interface IHero {
   name: string;
   height: string;
@@ -39,4 +41,13 @@ export type HeroDataType = {
 
 export type HeroSearchType = {
   search: string;
+};
+
+export type ResultPageProps = {
+  current: number;
+  setCurrent: Dispatch<React.SetStateAction<number>>;
+  count: number;
+  next: string;
+  previous: string;
+  results: IHero[];
 };

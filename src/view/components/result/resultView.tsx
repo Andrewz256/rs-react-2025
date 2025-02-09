@@ -1,12 +1,15 @@
-import { IHeroResponse } from '../../../data/types/interfaces/heroWorld';
-import style from './resultElement.module.css';
+import { MouseEvent } from 'react';
+import { ResultPageProps } from '../../../data/types/heroWorld';
+import style from './resultView.module.css';
 
-export function ElementsView({
+export function ResultsView({
   results,
   count,
   next,
   previous,
-}: IHeroResponse) {
+  current,
+  setCurrent,
+}: ResultPageProps) {
   const pageNumArray: number[] = [];
   if (count) {
     const pageNum = Math.ceil(count / 10);
@@ -14,8 +17,16 @@ export function ElementsView({
       pageNumArray.push(i);
     }
   }
+
+  function handleClickPageItem(e: MouseEvent<HTMLAnchorElement>) {
+    if (e.currentTarget.dataset.key) {
+      const pageNum: number = Number(e.currentTarget.dataset.key);
+      setCurrent(pageNum);
+    }
+  }
   return (
     <>
+      <p>page {current}</p>
       <section className={style.results}>
         <header className={style.resultItem}>
           <div className={style.resultItemColumn}>Name</div>
@@ -44,8 +55,9 @@ export function ElementsView({
           {count ? (
             pageNumArray.map((item) => (
               <li key={item} className={style.listPageItem}>
-                {/* <a href={next}></a> */}
-                {item}
+                <a data-key={item} onClick={(e) => handleClickPageItem(e)}>
+                  {item}
+                </a>
               </li>
             ))
           ) : (
