@@ -20,23 +20,6 @@
   align-items: center;
   gap: 2rem;
 }
-.resultList > ul {
-  list-style: none;
-}
-.resultList > ul > li {
-  border-bottom: 1px var(--border-color) solid;
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-}
-.resultPagePagination > ul {
-  list-style: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-}
 
 .searchButton {
   cursor: pointer;

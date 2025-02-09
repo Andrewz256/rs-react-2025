@@ -7,39 +7,36 @@ export interface IHero {
   eye_color: string;
   birth_year: string;
   gender: string;
-  homeworld: URL;
-  films: URL[];
-  species: URL[];
-  vehicles: URL[];
-  starships: URL[];
+  homeworld: string;
+  films: string[];
+  species: string[];
+  vehicles: string[];
+  starships: string[];
   created: Date;
   edited: Date;
-  url: URL;
+  url: string;
 }
 export interface IHeroResponse {
   count: number;
-  next: URL | null;
-  previous: URL | null;
-  results: IHero[] | undefined;
-}
-
-export interface PageNum {
-  pageCount: number | undefined;
-}
-
-export interface AllHero {
-  heroes: IHero[] | undefined;
+  next: string;
+  previous: string;
+  results: IHero[];
 }
 
 export interface SearchProps {
   pageNumber?: number;
-  heroName?: string;
+  heroName?: string | null | undefined;
 
   all?: string;
 }
 
 export type HeroDataType = {
-  data?: IHero[];
-  pageNum?: number;
-  search?: string;
+  data: IHero[];
+  pageNum: number;
+  next: string;
+  previous: string;
+};
+
+export type HeroSearchType = {
+  search: string;
 };

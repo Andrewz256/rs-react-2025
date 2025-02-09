@@ -2,34 +2,46 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import style from './main.module.css';
 import Input from '../../components/common/input/input';
 import Button from '../../components/common/button/button';
-import {
-  ElementsView,
-  NumberPageView,
-} from '../../components/searchElement/searchElement';
+import { ElementsView } from '../../components/resultElement/resultElement';
 import getStarWarsHero from '../../../data/api/getStarWarsHero';
-import { HeroDataType } from '../../../data/types/interfaces/heroWorld';
+import {
+  HeroDataType,
+  HeroSearchType,
+} from '../../../data/types/interfaces/heroWorld';
 
 const initialDataState = {
   data: [],
   pageNum: 1,
+  next: '',
+  previous: '',
+};
+const initialSearchState = {
   search: '',
 };
 export function Main() {
   const [stateData, setStateData] = useState<HeroDataType>(initialDataState);
   //const [pageNUm, setPageNum] = useState<HeroDataType>(initialDataState);
-  // const [searchData, setSearchData] = useState<HeroDataType>(initialDataState);
+  const [searchData, setSearchData] =
+    useState<HeroSearchType>(initialSearchState);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     setLoading(true);
     async function fetchHero() {
-      await getStarWarsHero({ all: 'all' }).then((res) => {
-        setStateData({
-          data: res?.results,
-          pageNum: res?.count,
-        });
-        // return res?.count;
-      });
+      await getStarWarsHero({ all: 'all' })
+        .then((res) => {
+          if (res) {
+            setStateData({
+              data: res.results,
+              pageNum: res.count,
+              next: res.next,
+              previous: res.previous,
+            });
+          }
+
+          // return res?.count;
+        })
+        .catch((error) => console.error('Error fetching data:', error));
 
       setLoading(false);
     }
@@ -43,29 +55,27 @@ export function Main() {
     const searchStr = new FormData(e.currentTarget)
       .get('searchInput')
       ?.toString();
-    console.log(searchStr);
+    let searchQuery: object = {};
     if (searchStr !== '') {
-      await getStarWarsHero({ heroName: searchStr }).then((res) => {
-        setStateData({
-          data: res?.results,
-          pageNum: res?.count,
-        });
-      });
-      setLoading(false);
+      searchQuery = { heroName: searchStr };
     } else {
-      const pageNumber = { pageNumber: 1 };
-      await getStarWarsHero(pageNumber).then((res) => {
-        setStateData({
-          data: res?.results,
-          pageNum: res?.count,
-        });
-        setLoading(false);
-      });
+      searchQuery = { pageNumber: 1 };
     }
+    await getStarWarsHero(searchQuery).then((res) => {
+      if (res) {
+        setStateData({
+          data: res.results,
+          pageNum: res.count,
+          next: res.next,
+          previous: res.previous,
+        });
+      }
+      setLoading(false);
+    });
   }
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;
-    setStateData({ search: value });
+    setSearchData({ search: value });
   }
 
   return (
@@ -77,6 +87,7 @@ export function Main() {
             classElement={style.searchInput}
             idElement="searchInput"
             onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
+            value={searchData.search}
           />
           <Button
             name={'Search'}
@@ -90,12 +101,12 @@ export function Main() {
         <div className={style.loader}>loading</div>
       ) : (
         <div className={style.resultField}>
-          <div className={style.resultList}>
-            <ElementsView heroes={stateData.data} />
-          </div>
-          <div className={style.resultPagePagination}>
-            <NumberPageView pageCount={stateData.pageNum} />
-          </div>
+          <ElementsView
+            results={stateData.data}
+            count={stateData.pageNum}
+            next={stateData.next}
+            previous={stateData.previous}
+          />
         </div>
       )}
     </div>
