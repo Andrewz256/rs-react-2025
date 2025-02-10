@@ -79,7 +79,7 @@ export function Main() {
       setLoading(false);
     }
     fetchHeroPage();
-  }, [currentPage]);
+  }, [currentPage, searching, searchData]);
 
   useEffect(() => {
     setLoading(true);
