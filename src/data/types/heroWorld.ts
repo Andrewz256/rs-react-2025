@@ -30,6 +30,8 @@ export interface SearchProps {
   heroName?: string | null | undefined;
 
   all?: string;
+
+  search?: string;
 }
 
 export type HeroDataType = {

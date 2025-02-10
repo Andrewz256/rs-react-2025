@@ -6,7 +6,7 @@ import { ResultsView } from '../../components/result/resultView';
 import getStarWarsHero from '../../../data/api/getStarWarsHero';
 import { HeroDataType, HeroSearchType } from '../../../data/types/heroWorld';
 import Header from '../../components/header/header';
-
+import { setSearchLSStr } from '../../../utils/local-storage';
 const initialDataState = {
   data: [],
   pageNum: 1,
@@ -22,6 +22,7 @@ export function Main() {
     useState<HeroSearchType>(initialSearchState);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrenPage] = useState(1);
+  const [searching, setSearching] = useState<boolean>(false);
 
   async function getHero(searchQuery: object) {
     await getStarWarsHero(searchQuery)
@@ -34,19 +35,18 @@ export function Main() {
             previous: res.previous,
           });
         }
-        return res;
       })
       .catch((error) => console.error('Error fetching data:', error));
   }
 
-  useEffect(() => {
-    setLoading(true);
-    async function fetchAllHero() {
-      await getHero({ all: 'all' });
-      setLoading(false);
+  async function searchHero(searchStr: string) {
+    let searchQuery: object = {};
+    if (searchStr) {
+      searchQuery = { heroName: searchStr };
+      await setSearchLSStr(searchStr);
+      await getHero(searchQuery);
     }
-    fetchAllHero();
-  }, []);
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -54,15 +54,15 @@ export function Main() {
     const searchStr = new FormData(e.currentTarget)
       .get('searchInput')
       ?.toString();
-    let searchQuery: object = {};
-    if (searchStr !== '') {
-      searchQuery = { heroName: searchStr };
+
+    if (searchStr) {
+      await searchHero(searchStr);
     } else {
-      searchQuery = { pageNumber: 1 };
+      await getHero({ pageNumber: 1 });
     }
-    await getHero(searchQuery);
     setLoading(false);
   }
+
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;
     setSearchData({ search: value });
@@ -70,12 +70,34 @@ export function Main() {
   useEffect(() => {
     setLoading(true);
     async function fetchHeroPage() {
-      await getHero({ pageNumber: currentPage });
+      if (searching) {
+        await getHero({ pageNumber: currentPage, search: searchData.search });
+      } else {
+        await getHero({ pageNumber: currentPage });
+      }
+
       setLoading(false);
     }
     fetchHeroPage();
-    console.log(currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    let searchQuery: object = {};
+    async function fetchAllHero() {
+      if (searchData.search) {
+        searchQuery = { heroName: searchData.search };
+        setSearching(true);
+      } else {
+        searchQuery = { all: 'all' };
+        setSearching(false);
+      }
+      await getHero(searchQuery);
+      setLoading(false);
+    }
+    fetchAllHero();
+  }, [searchData]);
 
   return (
     <div className={style.mainPage}>
@@ -83,11 +105,11 @@ export function Main() {
       <form className={style.searchForm} onSubmit={(e) => handleSubmit(e)}>
         <div className={style.searchField}>
           <Input
+            value={searchData.search}
             placeholder="write here..."
             classElement={style.searchInput}
             idElement="searchInput"
             onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
-            value={searchData.search}
           />
           <Button
             name={'Search'}

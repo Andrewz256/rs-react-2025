@@ -1,4 +1,4 @@
-import imgLogo from '../../../../public/StarWar Hero Table.jpg';
+import imgLogo from '../../../assets/StarWar Hero Table.jpg';
 import style from './header.module.css';
 
 function Header() {
