@@ -4,7 +4,11 @@ import Input from '../../components/common/input/input';
 import Button from '../../components/common/button/button';
 import { ResultsView } from '../../components/result/resultView';
 import getStarWarsHero from '../../../data/api/getStarWarsHero';
-import { HeroDataType, HeroSearchType } from '../../../data/types/heroWorld';
+import {
+  HeroDataType,
+  HeroSearchType,
+  SetSearchProps,
+} from '../../../data/types/heroWorld';
 import Header from '../../components/header/header';
 import { useLocalStorage } from '../../../data/hooks/useLocalStorage';
 
@@ -17,7 +21,7 @@ const initialDataState = {
 const initialSearchState = {
   search: '',
 };
-export function Main() {
+export function Main({ searchParams, setSearchParams }: SetSearchProps) {
   const [stateData, setStateData] = useState<HeroDataType>(initialDataState);
   const [searchData, setSearchData] =
     useState<HeroSearchType>(initialSearchState);
@@ -28,7 +32,9 @@ export function Main() {
     'searchStr',
     ''
   );
-
+  if (searchParams) {
+    console.log(searchParams);
+  }
   async function getHero(searchQuery: object) {
     await getStarWarsHero(searchQuery)
       .then((res) => {
@@ -69,35 +75,33 @@ export function Main() {
     setLoading(true);
     async function fetchHeroPage() {
       if (searchData.search) {
+        console.log(`Searching=${searching} currentPage=${currentPage}`);
+        setSearchParams(`search=${searchData.search}&page=${currentPage}`);
         if (searching) {
-          setCurrenPage(currentPage);
           await getHero({ pageNumber: currentPage, search: searchData.search });
         } else {
-          setCurrenPage(1);
           await getHero({ heroName: searchData.search });
           setSearching(true);
         }
       } else {
         if (searching) {
-          setCurrenPage(currentPage);
-          await getHero({ pageNumber: currentPage, search: searchData.search });
+          setSearchParams(`page${currentPage}`);
+          await getHero({ pageNumber: currentPage });
         } else {
-          setCurrenPage(1);
           if (currentSearchLS) {
             setSearchData({
               search: currentSearchLS,
             });
           } else {
             await getHero({ all: 'all' });
+            setSearching(true);
           }
-
-          setSearching(false);
         }
       }
       setLoading(false);
     }
     fetchHeroPage();
-  }, [currentPage, searching, searchData]);
+  }, [currentPage, searching, searchData, currentSearchLS, setSearchParams]);
 
   return (
     <div className={style.mainPage}>

@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import Main from '../../view/pages/main/main';
+import '@testing-library/jest-dom';
+import App from '../../App';
 
-describe('<Main />', () => {
+describe('<App />', () => {
   it('Search text `search` in Main Page', () => {
-    render(<Main />);
+    render(<App />);
     expect(screen.getByText(/Search/i));
   });
 });

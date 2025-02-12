@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import { SetURLSearchParams } from 'react-router-dom';
 
 export interface IHero {
   name: string;
@@ -54,7 +55,7 @@ export type ResultPageProps = {
   results: IHero[];
 };
 
-export type SetSearchLSStrProps = {
-  currentSearchLS: string;
-  setCurrentSearchLS: Dispatch<React.SetStateAction<string>>;
+export type SetSearchProps = {
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
 };
