@@ -6,7 +6,8 @@ import { ResultsView } from '../../components/result/resultView';
 import getStarWarsHero from '../../../data/api/getStarWarsHero';
 import { HeroDataType, HeroSearchType } from '../../../data/types/heroWorld';
 import Header from '../../components/header/header';
-import { setSearchLSStr } from '../../../utils/local-storage';
+import { useLocalStorage } from '../../../data/hooks/useLocalStorage';
+
 const initialDataState = {
   data: [],
   pageNum: 1,
@@ -23,6 +24,10 @@ export function Main() {
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrenPage] = useState(1);
   const [searching, setSearching] = useState<boolean>(false);
+  const [currentSearchLS, setCurrentSearchLS] = useLocalStorage(
+    'searchStr',
+    ''
+  );
 
   async function getHero(searchQuery: object) {
     await getStarWarsHero(searchQuery)
@@ -39,15 +44,6 @@ export function Main() {
       .catch((error) => console.error('Error fetching data:', error));
   }
 
-  async function searchHero(searchStr: string) {
-    let searchQuery: object = {};
-    if (searchStr) {
-      searchQuery = { heroName: searchStr };
-      await setSearchLSStr(searchStr);
-      await getHero(searchQuery);
-    }
-  }
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -56,7 +52,7 @@ export function Main() {
       ?.toString();
 
     if (searchStr) {
-      await searchHero(searchStr);
+      await getHero({ heroName: searchStr });
     } else {
       await getHero({ pageNumber: 1 });
     }
@@ -65,39 +61,43 @@ export function Main() {
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;
+    setCurrenPage(1);
+    setCurrentSearchLS(value);
     setSearchData({ search: value });
   }
   useEffect(() => {
     setLoading(true);
     async function fetchHeroPage() {
-      if (searching) {
-        await getHero({ pageNumber: currentPage, search: searchData.search });
+      if (searchData.search) {
+        if (searching) {
+          setCurrenPage(currentPage);
+          await getHero({ pageNumber: currentPage, search: searchData.search });
+        } else {
+          setCurrenPage(1);
+          await getHero({ heroName: searchData.search });
+          setSearching(true);
+        }
       } else {
-        await getHero({ pageNumber: currentPage });
-      }
+        if (searching) {
+          setCurrenPage(currentPage);
+          await getHero({ pageNumber: currentPage, search: searchData.search });
+        } else {
+          setCurrenPage(1);
+          if (currentSearchLS) {
+            setSearchData({
+              search: currentSearchLS,
+            });
+          } else {
+            await getHero({ all: 'all' });
+          }
 
+          setSearching(false);
+        }
+      }
       setLoading(false);
     }
     fetchHeroPage();
   }, [currentPage, searching, searchData]);
-
-  useEffect(() => {
-    setLoading(true);
-
-    let searchQuery: object = {};
-    async function fetchAllHero() {
-      if (searchData.search) {
-        searchQuery = { heroName: searchData.search };
-        setSearching(true);
-      } else {
-        searchQuery = { all: 'all' };
-        setSearching(false);
-      }
-      await getHero(searchQuery);
-      setLoading(false);
-    }
-    fetchAllHero();
-  }, [searchData]);
 
   return (
     <div className={style.mainPage}>

@@ -53,3 +53,8 @@ export type ResultPageProps = {
   previous: string;
   results: IHero[];
 };
+
+export type SetSearchLSStrProps = {
+  currentSearchLS: string;
+  setCurrentSearchLS: Dispatch<React.SetStateAction<string>>;
+};
