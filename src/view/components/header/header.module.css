@@ -1,0 +1,12 @@
+.header {
+  width: 60rem;
+  height: 20rem;
+  overflow: hidden;
+  border: 1px var(--border-color) solid;
+}
+.header > img {
+  min-width: auto;
+  min-height: auto;
+  height: 100%;
+  width: auto;
+}

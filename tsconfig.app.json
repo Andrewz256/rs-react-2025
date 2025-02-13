@@ -20,7 +20,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "types": ["node", "jest", "@testing-library/jest-dom", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["**/*.ts", "**/*.tsx", "../trash/Main.test.tsx"],
+  "exclude": [
+    "**/node_modules/**', '**/*.test.tsx', '**/*.spec.tsx', 'src/__tests__/setup.ts"
+  ]
 }

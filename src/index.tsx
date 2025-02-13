@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import './index.module..css';
 import App from './App.tsx';
 import ErrorBoundary from './ErrorBoundary.tsx';
+import { BrowserRouter } from 'react-router-dom';
 
 const div = document.createElement('div');
 div.setAttribute('id', 'root');
@@ -14,7 +15,9 @@ if (rootElement !== null) {
 
   root.render(
     <ErrorBoundary>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ErrorBoundary>
   );
 } else {

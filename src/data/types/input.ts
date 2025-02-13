@@ -5,4 +5,5 @@ export interface InputProps {
   classElement: string;
   idElement: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }
